@@ -1,3 +1,21 @@
+import { Moralis } from 'react-moralis';
+Moralis.Cloud.define("getMyList", async (request) => {
+  
+  const addrs = request.params.addrs;
+  const user = Moralis.Object.extend("_User");
+  const query = new Moralis.Query(user);
+  query.equalTo("ethAddress", addrs);
+  
+  const data = await query.first({ useMasterKey: true});
+ 
+  if(data.attributes.myList) {
+    return data.attributes.myList;
+  } else {
+      return [];
+  }
+  
+});
+
 Moralis.Cloud.define("updateMyList", async (request) => {
     const addrs = request.params.addrs;
     const newFav = request.params.newFav;
@@ -19,17 +37,3 @@ Moralis.Cloud.define("updateMyList", async (request) => {
     await data.save(null, { useMasterKey: true });
   });
   
-  Moralis.Cloud.define("getMyList", async (request) => {
-    const addrs = request.params.addrs;
-    const user = Moralis.Object.extend("_User");
-    const query = new Moralis.Query(user);
-    query.equalTo("ethAddress", addrs);
-  
-    const data = await query.first({ useMasterKey: true });
-  
-    if (data.attributes.myList) {
-      return data.attributes.myList;
-    } else {
-      return [];
-    }
-  });
