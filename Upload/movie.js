@@ -1,5 +1,6 @@
 let fs = require("fs");
 let axios = require("axios");
+require('dotenv').config()
 
 let media = ["secretVideo.mp4"];
 let ipfsArray = [];
@@ -26,8 +27,8 @@ Promise.all(promises).then(() => {
     ipfsArray,
     {
       headers: {
-        "X-API-KEY":
-          "<Your API KEY>",
+        "X-API-KEY": 
+        process.env.WEB3_API_KEY,
         "Content-Type": "application/json",
         accept: "application/json",
       },
